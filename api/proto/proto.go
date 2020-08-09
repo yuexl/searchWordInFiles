@@ -13,11 +13,15 @@ type BaseRsp struct {
 	ServerId string
 }
 
+type SearchResult struct {
+	FileName string
+	LineNo   int64
+	Content  string
+}
+
 type SearchWordRsp struct {
 	BaseRsp
-	Found        bool
-	FileNum      int64
-	FileNames    string
-	FileContents string
-	Files        []string
+	Found     bool
+	FileNum   int64
+	SearchRes []SearchResult
 }

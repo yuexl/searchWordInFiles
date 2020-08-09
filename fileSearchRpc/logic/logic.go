@@ -1,11 +1,15 @@
 package logic
 
 import (
+	"bufio"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"strings"
 	"sync"
 
+	"github.com/axgle/mahonia"
 	"github.com/smallnest/rpcx/log"
 
 	"fileSearch/fileSearchRpc/proto"
@@ -30,46 +34,21 @@ func FillFilesMap(path string) {
 	}
 }
 
-func StartSearch(word string, rsp *proto.SearchWordRsp, done chan bool) {
+func StartSearch(word string, rsp *proto.SearchWordRsp) {
 	fileDir := "E:/Work/searchFiles/"
 	once.Do(func() {
 		FillFilesMap(fileDir)
 	})
 
-	searchNames, searchContents := DoSearch(word)
-	log.Info(searchNames)
-	log.Info(searchContents)
+	DoSearch(word, &rsp.SearchRes)
 	rsp.Found = true
-	rsp.FileNum = 0
-	rsp.FileNames = searchNames
-	rsp.FileContents = searchContents
-
-	done <- true
+	rsp.FileNum = int64(len(rsp.SearchRes))
 }
 
-func DoSearch(word string) (string, string) {
-	fileNameChan := make(chan string, 0)
-	go SearchFileName(word, fileNameChan)
-
-	fileContentChan := make(chan string, 0)
-	go SearchContent(word, fileContentChan)
-
-	fileNameRes := <-fileNameChan
-	fileContentRes := <-fileContentChan
-	return fileNameRes, fileContentRes
-}
-
-func SearchFileName(word string, resChan chan string) {
-	resFiles := make([]string, 0)
-	FilesSyncMap.Range(func(file, info interface{}) bool {
-		filename := file.(string)
-		if strings.Contains(filename, word) {
-			resFiles = append(resFiles, filename)
-			log.Info(filename)
-		}
-		return true
-	})
-	resChan <- strings.Join(resFiles, "|")
+func DoSearch(word string, res *[]proto.SearchResult) {
+	fileContentChan := make(chan bool, 0)
+	go SearchContent(word, fileContentChan, res)
+	<-fileContentChan
 }
 
 func checkFileExist(filepath string) bool {
@@ -82,25 +61,54 @@ func checkFileExist(filepath string) bool {
 	return b
 }
 
-func SearchContent(word string, resChan chan string) {
-	resFiles := make([]string, 0)
-	FilesSyncMap.Range(func(filepath, info interface{}) bool {
-		if SearchFileContent(word, filepath.(string)) {
-			resFiles = append(resFiles, filepath.(string))
+func SearchContent(word string, doneChan chan bool, res *[]proto.SearchResult) {
+	FilesSyncMap.Range(func(file, info interface{}) bool {
+		filename := file.(string)
+		found, lineno, content := SearchFileContent(word, filename)
+		if found {
+			*res = append(*res, proto.SearchResult{
+				FileName: filename,
+				LineNo:   lineno,
+				Content:  content,
+			})
 		}
 		return true
 	})
-	resChan <- strings.Join(resFiles, "|")
+	doneChan <- true
 }
 
-func SearchFileContent(word string, filepath string) bool {
+func SearchFileContent(word string, filepath string) (found bool, lineno int64, content string) {
+	found = false
+	lineno = 0
+	content = ""
 	if !checkFileExist(filepath) {
-		return false
+		return
 	}
 
-	bytes, err := ioutil.ReadFile(filepath)
+	file, err := os.Open(filepath)
 	if err != nil {
-		return false
+		return
 	}
-	return strings.Contains(string(bytes), word)
+	defer file.Close()
+
+	reader := bufio.NewReader(file)
+
+	enc := mahonia.NewEncoder("GBK")
+
+	for {
+		readString, err := reader.ReadString('\n')
+		if err != nil || err == io.EOF {
+			break
+		}
+		if strings.Contains(readString, word) {
+			log.Info(readString)
+			found = true
+			lineno++
+			fmt.Println(readString)
+			content = enc.ConvertString(readString)
+			fmt.Println(content)
+			break
+		}
+	}
+	return
 }

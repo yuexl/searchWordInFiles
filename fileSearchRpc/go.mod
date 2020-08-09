@@ -2,4 +2,7 @@ module fileSearch/fileSearchRpc
 
 go 1.14
 
-require github.com/smallnest/rpcx v0.0.0-20200729031544-75f1e2894fdb
+require (
+	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
+	github.com/smallnest/rpcx v0.0.0-20200729031544-75f1e2894fdb
+)

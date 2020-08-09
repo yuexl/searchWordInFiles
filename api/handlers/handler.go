@@ -20,13 +20,12 @@ func GetSearchHandle(ctx *fiber.Ctx) {
 	req.TraceId = ctx.IP()
 	req.Word = word
 	rsp := proto.SearchWordRsp{}
-	//doneChan := make(chan *client.Call)
 	call, err := rpc.GXClient.Go(ctx.Context(), "Search", &req, &rsp, nil)
 	if err != nil {
 		return
 	}
 	<-call.Done
-	ctx.Status(200).Send(call.Reply)
+	ctx.Status(200).JSON(call.Reply)
 	log.Info(call.Reply)
 	log.Info(call)
 
