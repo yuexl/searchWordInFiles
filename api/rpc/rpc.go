@@ -1,12 +1,17 @@
 package rpc
 
-import "github.com/smallnest/rpcx/client"
+import (
+	"github.com/smallnest/rpcx/client"
+
+	"fileSearch/api/config"
+)
 
 var GXClient client.XClient
 
 func InitRpcClient() client.XClient {
-	serviceDiscovery := client.NewPeer2PeerDiscovery("tcp@:9001", "")
-	rpcClient := client.NewXClient("file_search_rpc", client.Failover, client.RoundRobin, serviceDiscovery, client.DefaultOption)
+	etcdAddr := config.GConfig.Etcd.Host + ":" + config.GConfig.Etcd.Port
+	serviceDiscovery := client.NewEtcdV3Discovery(config.GConfig.Etcd.BasePath, "FileRpcSearch", []string{etcdAddr}, nil)
+	rpcClient := client.NewXClient("FileRpcSearch", client.Failover, client.RoundRobin, serviceDiscovery, client.DefaultOption)
 	GXClient = rpcClient
 	return rpcClient
 }

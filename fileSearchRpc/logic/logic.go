@@ -2,7 +2,6 @@ package logic
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -10,8 +9,8 @@ import (
 	"sync"
 
 	"github.com/axgle/mahonia"
-	"github.com/smallnest/rpcx/log"
 
+	"fileSearch/fileSearchRpc/config"
 	"fileSearch/fileSearchRpc/proto"
 )
 
@@ -35,7 +34,7 @@ func FillFilesMap(path string) {
 }
 
 func StartSearch(word string, rsp *proto.SearchWordRsp) {
-	fileDir := "E:/Work/searchFiles/"
+	fileDir := config.GConfig.SearchDir
 	once.Do(func() {
 		FillFilesMap(fileDir)
 	})
@@ -101,12 +100,9 @@ func SearchFileContent(word string, filepath string) (found bool, lineno int64, 
 			break
 		}
 		if strings.Contains(readString, word) {
-			log.Info(readString)
 			found = true
 			lineno++
-			fmt.Println(readString)
 			content = enc.ConvertString(readString)
-			fmt.Println(content)
 			break
 		}
 	}

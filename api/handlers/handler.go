@@ -13,6 +13,10 @@ func IndexHander(ctx *fiber.Ctx) {
 	ctx.Send(ctx.BaseURL())
 }
 
+func EchoHandle(ctx *fiber.Ctx) {
+	ctx.Status(200).Send(ctx.Params("word"))
+}
+
 func GetSearchHandle(ctx *fiber.Ctx) {
 	word := ctx.Params("word")
 

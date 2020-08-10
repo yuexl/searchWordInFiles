@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fileSearch/api/config"
 	"fileSearch/api/handlers"
 	"fileSearch/api/rpc"
 
@@ -14,7 +15,7 @@ func main() {
 
 	rpc.InitRpcClient()
 
-	app.Listen(":9000")
+	app.Listen(config.GConfig.Api.Host + ":" + config.GConfig.Api.Port)
 }
 
 func setupRouters(app *fiber.App) {
@@ -22,5 +23,6 @@ func setupRouters(app *fiber.App) {
 	group := app.Group("/api/v1")
 	{
 		group.Get("/search/:word", handlers.GetSearchHandle)
+		group.Get("/echo/:word", handlers.EchoHandle)
 	}
 }
