@@ -3,9 +3,10 @@ package main
 import (
 	"github.com/sirupsen/logrus"
 
+	"fileSearch/log"
+
 	"fileSearch/api/config"
 	"fileSearch/api/handlers"
-	"fileSearch/api/log"
 	"fileSearch/api/rpc"
 
 	"github.com/gofiber/fiber"

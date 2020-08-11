@@ -4,9 +4,10 @@ import (
 	"context"
 	"time"
 
-	"fileSearch/fileSearchRpc/log"
+	"fileSearch/proto"
+
 	"fileSearch/fileSearchRpc/logic"
-	"fileSearch/fileSearchRpc/proto"
+	"fileSearch/log"
 )
 
 type FileRpcSearch struct {

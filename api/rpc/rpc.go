@@ -4,8 +4,9 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/smallnest/rpcx/client"
 
+	"fileSearch/log"
+
 	"fileSearch/api/config"
-	"fileSearch/api/log"
 )
 
 var GXClient client.XClient

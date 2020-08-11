@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"sync"
 	"time"
 )
@@ -10,12 +12,18 @@ import (
 func main() {
 	fmt.Println(time.Now().String())
 
-	wg := sync.WaitGroup{}
-	wg.Add(5000)
-	for i := 0; i < 5000; i++ {
-		go Send(&wg)
-	}
-	wg.Wait()
+	//wg := sync.WaitGroup{}
+	//wg.Add(5000)
+	//for i := 0; i < 5000; i++ {
+	//	go Send(&wg)
+	//}
+	//wg.Wait()
+
+	appName := os.Args[0]
+	fmt.Println(appName)
+	fmt.Println(filepath.Base(appName))
+	fmt.Println(filepath.Abs(appName))
+
 	fmt.Println(time.Now().String())
 }
 

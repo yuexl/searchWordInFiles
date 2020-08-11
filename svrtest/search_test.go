@@ -10,12 +10,12 @@ import (
 func BenchmarkSend(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		Send()
+		SendReq()
 	}
 }
 
 //mockFile 代表测试样本数据
-func Send() {
+func SendReq() {
 	newRequest, err := http.NewRequest("GET", "127.0.0.1:9000/api/v1/search/go", nil)
 	if err != nil {
 		return

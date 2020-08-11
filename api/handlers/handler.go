@@ -4,9 +4,10 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/sirupsen/logrus"
 
-	"fileSearch/api/log"
-	"fileSearch/api/proto"
+	"fileSearch/log"
+
 	"fileSearch/api/rpc"
+	"fileSearch/proto"
 )
 
 func IndexHander(ctx *fiber.Ctx) {

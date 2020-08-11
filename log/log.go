@@ -1,7 +1,9 @@
 package log
 
 import (
+	"os"
 	"path"
+	"path/filepath"
 	"time"
 
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
@@ -19,7 +21,8 @@ func init() {
 	GLogger.SetFormatter(&logrus.TextFormatter{})
 	GLogger.SetLevel(logrus.InfoLevel)
 
-	ConfigLocalFilesystemLogger("./log", "rpclog", time.Hour*240, time.Hour*1)
+	logFile := filepath.Base(os.Args[0])
+	ConfigLocalFilesystemLogger("./log", logFile, time.Hour*240, time.Hour*1)
 
 	//logFile, err := os.OpenFile("api.log", os.O_CREATE|os.O_WRONLY, 0)
 	//if err != nil {
@@ -40,10 +43,10 @@ func ConfigLocalFilesystemLogger(logPath string, logFileName string, maxAge time
 		logrus.Errorf("config local file system logger error. %+v", errors.WithStack(err))
 	}
 	writer, err := rotatelogs.New(
-		baseLogPaht+"_%Y%m%d%H%M.log",
-		rotatelogs.WithLinkName(baseLogPaht+"_%Y%m%d%H%M.log"), // 生成软链，指向最新日志文件
-		rotatelogs.WithMaxAge(maxAge),                          // 文件最大保存时间
-		rotatelogs.WithRotationTime(rotationTime),              // 日志切割时间间隔
+		baseLogPaht+"%Y%m%d%H%M.log",
+		rotatelogs.WithLinkName(baseLogPaht+"%Y%m%d%H%M.log"), // 生成软链，指向最新日志文件
+		rotatelogs.WithMaxAge(maxAge),                         // 文件最大保存时间
+		rotatelogs.WithRotationTime(rotationTime),             // 日志切割时间间隔
 	)
 	if err != nil {
 		logrus.Errorf("config local file system logger error. %+v", errors.WithStack(err))

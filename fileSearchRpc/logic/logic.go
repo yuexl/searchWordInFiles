@@ -10,9 +10,10 @@ import (
 
 	"github.com/axgle/mahonia"
 
+	"fileSearch/proto"
+
 	"fileSearch/fileSearchRpc/config"
-	"fileSearch/fileSearchRpc/log"
-	"fileSearch/fileSearchRpc/proto"
+	"fileSearch/log"
 )
 
 var (
