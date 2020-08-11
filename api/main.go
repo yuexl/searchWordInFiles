@@ -1,8 +1,11 @@
 package main
 
 import (
+	"github.com/sirupsen/logrus"
+
 	"fileSearch/api/config"
 	"fileSearch/api/handlers"
+	"fileSearch/api/log"
 	"fileSearch/api/rpc"
 
 	"github.com/gofiber/fiber"
@@ -14,6 +17,11 @@ func main() {
 	setupRouters(app)
 
 	rpc.InitRpcClient()
+
+	log.GLogger.WithFields(logrus.Fields{
+		"host": config.GConfig.Api.Host,
+		"port": config.GConfig.Api.Port,
+	}).Infoln("api start listing")
 
 	app.Listen(config.GConfig.Api.Host + ":" + config.GConfig.Api.Port)
 }

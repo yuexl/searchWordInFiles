@@ -11,6 +11,7 @@ import (
 	"github.com/axgle/mahonia"
 
 	"fileSearch/fileSearchRpc/config"
+	"fileSearch/fileSearchRpc/log"
 	"fileSearch/fileSearchRpc/proto"
 )
 
@@ -29,6 +30,7 @@ func FillFilesMap(path string) {
 			FillFilesMap(path + file.Name() + "/")
 		} else {
 			FilesSyncMap.Store(path+file.Name(), file)
+			log.GLogger.Infoln(file)
 		}
 	}
 }
@@ -40,7 +42,7 @@ func StartSearch(word string, rsp *proto.SearchWordRsp) {
 	})
 
 	DoSearch(word, &rsp.SearchRes)
-	rsp.Found = true
+	rsp.Found = len(rsp.SearchRes) > 0
 	rsp.FileNum = int64(len(rsp.SearchRes))
 }
 
@@ -65,6 +67,7 @@ func SearchContent(word string, doneChan chan bool, res *[]proto.SearchResult) {
 		filename := file.(string)
 		found, lineno, content := SearchFileContent(word, filename)
 		if found {
+			log.GLogger.Infof("search %s found %s \n", filename, word)
 			*res = append(*res, proto.SearchResult{
 				FileName: filename,
 				LineNo:   lineno,

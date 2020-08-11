@@ -2,22 +2,38 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber"
-	"github.com/smallnest/rpcx/log"
+	"github.com/sirupsen/logrus"
 
+	"fileSearch/api/log"
 	"fileSearch/api/proto"
 	"fileSearch/api/rpc"
 )
 
 func IndexHander(ctx *fiber.Ctx) {
-
+	log.GLogger.WithFields(logrus.Fields{
+		"clientIp": ctx.IP(),
+		"url":      ctx.BaseURL(),
+	}).Infoln("index handler")
 	ctx.Send(ctx.BaseURL())
 }
 
 func EchoHandle(ctx *fiber.Ctx) {
+	log.GLogger.WithFields(logrus.Fields{
+		"clientIp": ctx.IP(),
+		"url":      ctx.BaseURL(),
+		"param":    ctx.Params("word"),
+	}).Infoln("echo handler")
 	ctx.Status(200).Send(ctx.Params("word"))
 }
 
 func GetSearchHandle(ctx *fiber.Ctx) {
+	logFields := logrus.Fields{
+		"clientIp": ctx.IP(),
+		"url":      ctx.BaseURL(),
+		"param":    ctx.Params("word"),
+	}
+	log.GLogger.WithFields(logFields).Infoln("search handler")
+
 	word := ctx.Params("word")
 
 	req := proto.SearchWordReq{}
@@ -26,12 +42,12 @@ func GetSearchHandle(ctx *fiber.Ctx) {
 	rsp := proto.SearchWordRsp{}
 	call, err := rpc.GXClient.Go(ctx.Context(), "Search", &req, &rsp, nil)
 	if err != nil {
+		log.GLogger.WithFields(logFields).Error(err)
 		return
 	}
 	<-call.Done
 	ctx.Status(200).JSON(call.Reply)
-	log.Info(call.Reply)
-	log.Info(call)
+	//log.GLogger.Infoln(call.Reply)
 
 	//err := rpc.GXClient.Call(ctx.Context(), "Search", &req, &rsp)
 	//if err != nil {
