@@ -5,9 +5,9 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"fileSearch/log"
+	"fileSearch/proto"
 
 	"fileSearch/api/rpc"
-	"fileSearch/proto"
 )
 
 func IndexHander(ctx *fiber.Ctx) {

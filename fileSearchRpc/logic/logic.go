@@ -1,19 +1,14 @@
 package logic
 
 import (
-	"bufio"
-	"io"
 	"io/ioutil"
-	"os"
-	"strings"
+	"path"
 	"sync"
 
-	"github.com/axgle/mahonia"
-
+	"fileSearch/log"
 	"fileSearch/proto"
 
 	"fileSearch/fileSearchRpc/config"
-	"fileSearch/log"
 )
 
 var (
@@ -53,20 +48,11 @@ func DoSearch(word string, res *[]proto.SearchResult) {
 	<-fileContentChan
 }
 
-func checkFileExist(filepath string) bool {
-	b := true
-	if _, err := os.Stat(filepath); err != nil {
-		if os.IsNotExist(err) {
-			b = false
-		}
-	}
-	return b
-}
-
 func SearchContent(word string, doneChan chan bool, res *[]proto.SearchResult) {
 	FilesSyncMap.Range(func(file, info interface{}) bool {
 		filename := file.(string)
-		found, lineno, content := SearchFileContent(word, filename)
+		searchInter := NewSearchByExt(path.Ext(filename))
+		found, lineno, content := searchInter.SearchContent(word, filename)
 		if found {
 			log.GLogger.Infof("search %s found %s \n", filename, word)
 			*res = append(*res, proto.SearchResult{
@@ -78,37 +64,4 @@ func SearchContent(word string, doneChan chan bool, res *[]proto.SearchResult) {
 		return true
 	})
 	doneChan <- true
-}
-
-func SearchFileContent(word string, filepath string) (found bool, lineno int64, content string) {
-	found = false
-	lineno = 0
-	content = ""
-	if !checkFileExist(filepath) {
-		return
-	}
-
-	file, err := os.Open(filepath)
-	if err != nil {
-		return
-	}
-	defer file.Close()
-
-	reader := bufio.NewReader(file)
-
-	enc := mahonia.NewEncoder("GBK")
-
-	for {
-		readString, err := reader.ReadString('\n')
-		if err != nil || err == io.EOF {
-			break
-		}
-		if strings.Contains(readString, word) {
-			found = true
-			lineno++
-			content = enc.ConvertString(readString)
-			break
-		}
-	}
-	return
 }

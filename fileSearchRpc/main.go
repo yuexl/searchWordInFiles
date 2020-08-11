@@ -9,9 +9,10 @@ import (
 	"github.com/smallnest/rpcx/server"
 	"github.com/smallnest/rpcx/serverplugin"
 
+	"fileSearch/log"
+
 	"fileSearch/fileSearchRpc/config"
 	"fileSearch/fileSearchRpc/rpc"
-	"fileSearch/log"
 )
 
 func main() {
