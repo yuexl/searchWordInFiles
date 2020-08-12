@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+	"net/url"
 	"time"
 
 	"fileSearch/log"
@@ -14,7 +15,11 @@ type FileRpcSearch struct {
 }
 
 func (rpc *FileRpcSearch) Search(ctx context.Context, req *proto.SearchWordReq, rsp *proto.SearchWordRsp) error {
-	log.GLogger.WithField("traceid", req.TraceId).Infoln(req.Word)
+	word, err := url.QueryUnescape(req.Word)
+	if err != nil {
+		return err
+	}
+	log.GLogger.WithField("traceid", req.TraceId).Infoln(word)
 	rsp.ServerId = req.TraceId + "_" + time.Now().String()
 	logic.StartSearch(req.Word, rsp)
 

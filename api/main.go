@@ -4,10 +4,11 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/sirupsen/logrus"
 
+	"fileSearch/log"
+
 	"fileSearch/api/config"
 	"fileSearch/api/handlers"
 	"fileSearch/api/rpc"
-	"fileSearch/log"
 )
 
 func main() {

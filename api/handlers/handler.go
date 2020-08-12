@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"net/url"
+
 	"github.com/gofiber/fiber"
 	"github.com/sirupsen/logrus"
 
@@ -19,23 +21,31 @@ func IndexHander(ctx *fiber.Ctx) {
 }
 
 func EchoHandle(ctx *fiber.Ctx) {
+	word, err := url.QueryUnescape(ctx.Params("word"))
+	if err != nil {
+		return
+	}
 	log.GLogger.WithFields(logrus.Fields{
 		"clientIp": ctx.IP(),
 		"url":      ctx.BaseURL(),
-		"param":    ctx.Params("word"),
+		"param":    word,
 	}).Infoln("echo handler")
-	ctx.Status(200).Send(ctx.Params("word"))
+
+	ctx.Status(200).Send(word)
 }
 
 func GetSearchHandle(ctx *fiber.Ctx) {
+	word, err := url.QueryUnescape(ctx.Params("word"))
+	if err != nil {
+		return
+	}
+
 	logFields := logrus.Fields{
 		"clientIp": ctx.IP(),
 		"url":      ctx.BaseURL(),
-		"param":    ctx.Params("word"),
+		"param":    word,
 	}
 	log.GLogger.WithFields(logFields).Infoln("search handler")
-
-	word := ctx.Params("word")
 
 	req := proto.SearchWordReq{}
 	req.TraceId = ctx.IP()
