@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"net/http/pprof"
 	"time"
 
 	"github.com/rcrowley/go-metrics"
@@ -12,10 +14,25 @@ import (
 	"fileSearch/log"
 
 	"fileSearch/fileSearchRpc/config"
+	"fileSearch/fileSearchRpc/redis"
 	"fileSearch/fileSearchRpc/rpc"
 )
 
+func SetPprof() {
+	go func() {
+		http.HandleFunc("/debug/pprof/block", pprof.Index)
+		http.HandleFunc("/debug/pprof/goroutine", pprof.Index)
+		http.HandleFunc("/debug/pprof/heap", pprof.Index)
+		http.HandleFunc("/debug/pprof/threadcreate", pprof.Index)
+
+		http.ListenAndServe("localhost:8888", nil)
+	}()
+}
+
 func main() {
+	SetPprof()
+
+	redis.InitRedigo()
 	rpcSer := server.NewServer()
 
 	addRegistryPlugin(rpcSer)

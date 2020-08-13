@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"path"
 	"sync"
@@ -9,6 +10,7 @@ import (
 	"fileSearch/proto"
 
 	"fileSearch/fileSearchRpc/config"
+	"fileSearch/fileSearchRpc/redis"
 )
 
 var (
@@ -40,6 +42,14 @@ func StartSearch(word string, rsp *proto.SearchWordRsp) {
 	DoSearch(word, &rsp.SearchRes)
 	rsp.Found = len(rsp.SearchRes) > 0
 	rsp.FileNum = int64(len(rsp.SearchRes))
+	if rsp.Found {
+		bytes, err := json.Marshal(rsp.SearchRes)
+		if err != nil {
+			log.GLogger.Errorf("marshal err %v", err)
+			return
+		}
+		redis.RedigoExec("SET", word, string(bytes))
+	}
 }
 
 func DoSearch(word string, res *[]proto.SearchResult) {

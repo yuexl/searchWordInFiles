@@ -5,4 +5,7 @@ etcd:
 rpc:
   host: localhost
   port: 9001
+redis:
+  host: localhost
+  port: 6379
 searchdir: E:/Work/searchFiles/

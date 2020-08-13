@@ -1,6 +1,9 @@
 package main
 
 import (
+	"net/http"
+	"net/http/pprof"
+
 	"github.com/gofiber/fiber"
 	"github.com/sirupsen/logrus"
 
@@ -11,7 +14,20 @@ import (
 	"fileSearch/api/rpc"
 )
 
+func SetPprof() {
+	go func() {
+		http.HandleFunc("/debug/pprof/block", pprof.Index)
+		http.HandleFunc("/debug/pprof/goroutine", pprof.Index)
+		http.HandleFunc("/debug/pprof/heap", pprof.Index)
+		http.HandleFunc("/debug/pprof/threadcreate", pprof.Index)
+
+		http.ListenAndServe("localhost:8888", nil)
+	}()
+}
+
 func main() {
+	//SetPprof()
+
 	app := fiber.New()
 
 	setupRouters(app)

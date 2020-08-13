@@ -8,9 +8,10 @@ import (
 )
 
 type Config struct {
-	Etcd      EtcdConfig `yaml:"etcd"`
-	Rpc       RpcConfig  `yaml:"rpc"`
-	SearchDir string     `yaml:"searchdir"`
+	Etcd      EtcdConfig  `yaml:"etcd"`
+	Rpc       RpcConfig   `yaml:"rpc"`
+	Redis     RedisConfig `yaml:"redis"`
+	SearchDir string      `yaml:"searchdir"`
 }
 
 type EtcdConfig struct {
@@ -20,6 +21,11 @@ type EtcdConfig struct {
 }
 
 type RpcConfig struct {
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
+}
+
+type RedisConfig struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
 }
@@ -36,6 +42,10 @@ func init() {
 		Rpc: RpcConfig{
 			Host: "localhost",
 			Port: "9001",
+		},
+		Redis: RedisConfig{
+			Host: "localhost",
+			Port: "6379",
 		},
 		SearchDir: "E:/Work/searchFiles/",
 	}

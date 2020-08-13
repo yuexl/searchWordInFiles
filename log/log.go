@@ -19,7 +19,7 @@ var (
 func init() {
 	GLogger = logrus.New()
 	GLogger.SetFormatter(&logrus.TextFormatter{})
-	GLogger.SetLevel(logrus.InfoLevel)
+	GLogger.SetLevel(logrus.ErrorLevel)
 
 	logFile := filepath.Base(os.Args[0])
 	ConfigLocalFilesystemLogger("./log", logFile, time.Hour*240, time.Hour*1)
