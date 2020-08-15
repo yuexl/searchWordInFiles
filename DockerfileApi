@@ -1,0 +1,11 @@
+# Final stage
+FROM ubuntu-with-ping
+
+EXPOSE 9000
+
+ADD ./api/config.yaml /searchapi/
+ADD ./api/apiserver /searchapi/
+ADD ./api/logfile/ /searchapi/logfile/
+WORKDIR /searchapi
+
+CMD ["./apiserver"]

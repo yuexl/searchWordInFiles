@@ -1,0 +1,12 @@
+# Final stage
+FROM ubuntu-with-ping
+
+EXPOSE 9001 8888
+
+ADD ./fileSearchRpc/config.yaml /fileRpc/
+ADD ./fileSearchRpc/rpcserver /fileRpc/
+ADD ./fileSearchRpc/logfile/ /fileRpc/logfile/
+
+WORKDIR /fileRpc
+
+CMD ["./rpcserver"]

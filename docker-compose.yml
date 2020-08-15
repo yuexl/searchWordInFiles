@@ -1,0 +1,39 @@
+version: '2'
+services:
+  rpc:
+    build:
+      context: .
+      dockerfile: ./DockerfileRpc
+    ports:
+      - "9001"
+      - "8888:8888"
+    container_name: rpc
+    depends_on:
+      - redis
+      - etcd
+    volumes:
+    - E:/Work/searchFiles /searchFiles/
+#    restart: always
+
+  api:
+    build:
+      context: .
+      dockerfile: ./DockerfileApi
+    ports:
+      - "9000:9000"
+    container_name: api
+    depends_on:
+      - rpc
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379"
+
+  etcd:
+    image: registry.cn-hangzhou.aliyuncs.com/coreos_etcd/etcd:v3
+    container_name: etcd
+    ports:
+      - "2379"
+    command: etcd -name etcd -advertise-client-urls http://0.0.0.0:2379 -listen-client-urls http://0.0.0.0:2379 -listen-peer-urls http://0.0.0.0:2380

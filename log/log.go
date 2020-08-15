@@ -19,10 +19,10 @@ var (
 func init() {
 	GLogger = logrus.New()
 	GLogger.SetFormatter(&logrus.TextFormatter{})
-	GLogger.SetLevel(logrus.ErrorLevel)
+	GLogger.SetLevel(logrus.InfoLevel)
 
 	logFile := filepath.Base(os.Args[0])
-	ConfigLocalFilesystemLogger("./log", logFile, time.Hour*240, time.Hour*1)
+	ConfigLocalFilesystemLogger("./logfile", logFile, time.Hour*240, time.Hour*1)
 
 	//logFile, err := os.OpenFile("api.log", os.O_CREATE|os.O_WRONLY, 0)
 	//if err != nil {
