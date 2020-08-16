@@ -25,7 +25,7 @@ func SetPprof() {
 		http.HandleFunc("/debug/pprof/heap", pprof.Index)
 		http.HandleFunc("/debug/pprof/threadcreate", pprof.Index)
 
-		http.ListenAndServe("localhost:8888", nil)
+		http.ListenAndServe(":8888", nil)
 	}()
 }
 
@@ -38,7 +38,7 @@ func main() {
 	addRegistryPlugin(rpcSer)
 	rpcSer.RegisterName("FileRpcSearch", new(rpc.FileRpcSearch), "")
 
-	addr := fmt.Sprintf("%s:%s", config.GConfig.Rpc.Host, config.GConfig.Rpc.Port)
+	addr := fmt.Sprintf(":%s", config.GConfig.Rpc.Port)
 
 	log.GLogger.WithField("addr", addr).Infoln("start rpc server")
 	rpcSer.Serve("tcp", addr)

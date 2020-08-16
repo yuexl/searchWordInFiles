@@ -12,7 +12,7 @@ services:
       - redis
       - etcd
     volumes:
-    - E:/Work/searchFiles /searchFiles/
+    - E:/Work/searchFiles:/searchfiles/
 #    restart: always
 
   api:
@@ -20,7 +20,7 @@ services:
       context: .
       dockerfile: ./DockerfileApi
     ports:
-      - "9000:9000"
+      - "8000:8000"
     container_name: api
     depends_on:
       - rpc

@@ -21,6 +21,7 @@ var (
 func FillFilesMap(path string) {
 	fileInfos, err := ioutil.ReadDir(path)
 	if err != nil {
+		log.GLogger.Errorln(err)
 		return
 	}
 	for _, file := range fileInfos {
@@ -49,6 +50,7 @@ func StartSearch(word string, rsp *proto.SearchWordRsp) {
 			return
 		}
 		redis.RedigoExec("SET", word, string(bytes))
+		log.GLogger.Infoln("redis set ", word, string(bytes))
 	}
 }
 

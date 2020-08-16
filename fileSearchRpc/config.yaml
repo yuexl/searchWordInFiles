@@ -3,9 +3,9 @@ etcd:
   port: 2379
   basepath: file_search_rpc
 rpc:
-  host: 127.0.0.1
+  host: rpc
   port: 9001
 redis:
   host: redis
   port: 6379
-searchdir: ./searchFiles/
+searchdir: /searchfiles/

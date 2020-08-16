@@ -39,7 +39,8 @@ func main() {
 		"port": config.GConfig.Api.Port,
 	}).Infoln("api start listing")
 
-	app.Listen(config.GConfig.Api.Host + ":" + config.GConfig.Api.Port)
+	//app.Listen(config.GConfig.Api.Host + ":" + config.GConfig.Api.Port)
+	app.Listen(":" + config.GConfig.Api.Port)
 }
 
 func setupRouters(app *fiber.App) {
