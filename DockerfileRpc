@@ -1,12 +1,12 @@
 # Final stage
-FROM ubuntu-with-ping
+FROM centos:latest
 
-EXPOSE 9001 8888
+# EXPOSE 9001 8888
 
 ADD ./fileSearchRpc/config.yaml /fileRpc/
 ADD ./fileSearchRpc/rpcserver /fileRpc/
 ADD ./fileSearchRpc/logfile/ /fileRpc/logfile/
 
 WORKDIR /fileRpc
-
+RUN chmod +x ./rpcserver
 CMD ["./rpcserver"]

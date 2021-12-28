@@ -1,11 +1,11 @@
 # Final stage
-FROM ubuntu-with-ping
+FROM centos:latest
 
-EXPOSE 8000
+# EXPOSE 8000
 
 ADD ./api/config.yaml /searchapi/
 ADD ./api/apiserver /searchapi/
 ADD ./api/logfile/ /searchapi/logfile/
 WORKDIR /searchapi
-
+RUN chmod +x ./apiserver
 CMD ["./apiserver"]

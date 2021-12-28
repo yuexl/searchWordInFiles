@@ -12,7 +12,7 @@ services:
       - redis
       - etcd
     volumes:
-    - E:/Work/searchFiles:/searchfiles/
+    - ./searchfiles:/searchfiles/
 #    restart: always
 
   api:
