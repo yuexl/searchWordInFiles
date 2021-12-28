@@ -10,8 +10,10 @@ import (
 	"fileSearch/proto"
 
 	"fileSearch/api/rpc"
+	"fileSearch/api/utils"
 )
 
+//IndexHander indexccc
 func IndexHander(ctx *fiber.Ctx) {
 	log.GLogger.WithFields(logrus.Fields{
 		"clientIp": ctx.IP(),
@@ -20,6 +22,20 @@ func IndexHander(ctx *fiber.Ctx) {
 	ctx.Send(ctx.BaseURL())
 }
 
+func LoginHandle(ctx *fiber.Ctx) {
+	uname := ctx.FormValue("username")
+	pwd := ctx.FormValue("passwd")
+	strGuid := utils.GetGUID().Hex()
+	ctx.Cookie(&fiber.Cookie{Name: "sessionid", Value: strGuid})
+	ctx.Status(200).Send(uname + " " + pwd + "   login succ")
+}
+
+func SessionHandle(ctx *fiber.Ctx) {
+	sessionid := ctx.Cookies("sessionid", "")
+	print(sessionid)
+}
+
+//EchoHandle indexccc
 func EchoHandle(ctx *fiber.Ctx) {
 	word, err := url.QueryUnescape(ctx.Params("word"))
 	if err != nil {
@@ -34,8 +50,25 @@ func EchoHandle(ctx *fiber.Ctx) {
 	ctx.Status(200).Send(word)
 }
 
+//SayHandle indexccc
+func SayHandle(ctx *fiber.Ctx) {
+	query := ctx.Query("word", "")
+	log.GLogger.Info("query ", query)
+	word, err := url.QueryUnescape(query)
+	if err != nil {
+		return
+	}
+	log.GLogger.WithFields(logrus.Fields{
+		"clientIp": ctx.IP(),
+		"url":      ctx.BaseURL(),
+		"param":    word,
+	}).Infoln("say handler")
+
+	ctx.Status(200).Send("hello " + word)
+}
+
 func GetSearchHandle(ctx *fiber.Ctx) {
-	word, err := url.QueryUnescape(ctx.Params("word"))
+	word, err := url.QueryUnescape(ctx.Query("word"))
 	if err != nil {
 		return
 	}

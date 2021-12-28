@@ -1,0 +1,7 @@
+etcd:
+  host: etcd
+  port: 2379
+  basepath: file_search_rpc
+api:
+  host: 127.0.0.1
+  port: 8000

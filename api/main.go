@@ -47,7 +47,10 @@ func setupRouters(app *fiber.App) {
 	app.Get("/", handlers.IndexHander)
 	group := app.Group("/api/v1")
 	{
-		group.Get("/search/:word", handlers.GetSearchHandle)
+		//app.Use("/", handlers.SessionHandle)
+		group.Post("/login", handlers.LoginHandle)
+		group.Get("/search", handlers.GetSearchHandle)
 		group.Get("/echo/:word", handlers.EchoHandle)
+		group.Get("/say", handlers.SayHandle)
 	}
 }

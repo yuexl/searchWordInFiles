@@ -1,0 +1,6 @@
+http://127.0.0.1:8000/api/v1/search/redis
+http://127.0.0.1:8000/api/v1/search/go
+http://127.0.0.1:8000/api/v1/search/mysql
+http://127.0.0.1:8000/api/v1/search/golang
+http://127.0.0.1:8000/api/v1/search/数据库
+http://127.0.0.1:8000/api/v1/echo/redis
