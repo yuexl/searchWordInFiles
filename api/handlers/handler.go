@@ -9,8 +9,8 @@ import (
 	"fileSearch/log"
 	"fileSearch/proto"
 
-	"fileSearch/api/rpc"
-	"fileSearch/api/utils"
+	"api/rpc"
+	"api/utils"
 )
 
 //IndexHander indexccc

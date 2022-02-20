@@ -10,7 +10,7 @@ import (
 
 	goredis "github.com/go-redis/redis"
 
-	"fileSearch/fileSearchRpc/config"
+	"rpc/config"
 )
 
 var gRedisClient *goredis.Client

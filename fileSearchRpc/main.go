@@ -7,15 +7,15 @@ import (
 	"time"
 
 	"github.com/rcrowley/go-metrics"
+	"github.com/rpcxio/rpcx-etcd/serverplugin"
 	"github.com/sirupsen/logrus"
 	"github.com/smallnest/rpcx/server"
-	"github.com/smallnest/rpcx/serverplugin"
 
 	"fileSearch/log"
 
-	"fileSearch/fileSearchRpc/config"
-	"fileSearch/fileSearchRpc/redis"
-	"fileSearch/fileSearchRpc/rpc"
+	"rpc/config"
+	"rpc/redis"
+	"rpc/rpc"
 )
 
 func SetPprof() {

@@ -10,8 +10,8 @@ import (
 	"fileSearch/log"
 	"fileSearch/proto"
 
-	"fileSearch/fileSearchRpc/logic"
-	"fileSearch/fileSearchRpc/redis"
+	"rpc/logic"
+	"rpc/redis"
 )
 
 type FileRpcSearch struct {

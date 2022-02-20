@@ -9,8 +9,8 @@ import (
 	"fileSearch/log"
 	"fileSearch/proto"
 
-	"fileSearch/fileSearchRpc/config"
-	"fileSearch/fileSearchRpc/redis"
+	"rpc/config"
+	"rpc/redis"
 )
 
 var (
@@ -55,7 +55,7 @@ func StartSearch(word string, rsp *proto.SearchWordRsp) {
 }
 
 func DoSearch(word string, res *[]proto.SearchResult) {
-	fileContentChan := make(chan bool, 0)
+	fileContentChan := make(chan bool)
 	go SearchContent(word, fileContentChan, res)
 	<-fileContentChan
 }

@@ -9,9 +9,9 @@ import (
 
 	"fileSearch/log"
 
-	"fileSearch/api/config"
-	"fileSearch/api/handlers"
-	"fileSearch/api/rpc"
+	"api/config"
+	"api/handlers"
+	"api/rpc"
 )
 
 func SetPprof() {

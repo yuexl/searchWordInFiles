@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "api",
+			"path": "./api"
+		},
+		{
+			"name": "rpc",
+			"path": "./fileSearchRpc"
+		},
+		{
+			"name": "log",
+			"path": "./log"
+		},
+		{
+			"name": "proto",
+			"path": "./proto"
+		},
+		{
+			"name": "test",
+			"path": "./svrtest"
+		},
+		{
+			"name": "dcapi",
+			"path": "./dcapi"
+		}
+	],
+	"settings": {}
+}

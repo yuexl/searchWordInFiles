@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	_ "fileSearch/log"
-
 	redigo "github.com/garyburd/redigo/redis"
 
-	"fileSearch/fileSearchRpc/config"
+	"rpc/config"
 )
 
 type RedigoPool struct {
